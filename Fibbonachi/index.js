@@ -8,7 +8,7 @@ var arrData = []
 var arrXData = []
 var arrYData = []
 var skyCols = ["lightblue","cadetblue", "grey", "pink", "orange"];
-var circleObjArr = []
+
 
 
 
@@ -18,7 +18,7 @@ var svg = d3.selectAll("svg")
 
 
 for (var i = 210 ; i < numPoints; i++) {
-    var color = skyCols[i%skyCols.length]
+    var circleColor = skyCols[i%skyCols.length]
 
 	var dst = Math.pow(i / (numPoints - 1),0.6)
 	var angle = 2 * Math.PI * turnFraction * i
@@ -27,9 +27,7 @@ for (var i = 210 ; i < numPoints; i++) {
 	var y = dst * Math.sin(angle)
 
 
-
-	placePoint(x,y,5)
-	arrData.push({distance: dst, xValue: x, yValue: y, number: i, colour: color})
+	arrData.push({distance: dst, xValue: x, yValue: y, color: circleColor})
 	arrXData.push(x)
 	arrYData.push(y)
 
@@ -58,7 +56,7 @@ var circles = svg.selectAll("circle")
 	.data(arrData)
 	.join("circle")
 	.attr("fill", function(d){
-		return d.colour;
+		return d.color;
 	})
 	.attr("cx",function(d){
 		return xScale(d.xValue);
@@ -98,15 +96,13 @@ circles.on("mouseover", function(d,i){
 		.transition()
 		.duration(300)
 		.attr("r",function(d, i){
+			console.log(d.color)
+			var thisColor = d.color
+			//UpdateMid(thisColor)
 			return d.distance * 4 + 10;
 		})
-		var thisColor = function(d){
-			return this.fill;
-		}
-		console.log(d.xValue)
-
-	d3.selectAll("middle")
-		.attr("fill", "white")
+		
+		
 		
 	})
 	
@@ -146,9 +142,14 @@ function updateVis(){
 	d3.selectAll("circle")
 		.data(arrData)
 		.join("circle")
-		.attr("fill", function(d){
-			return highlightDecider(d.number);
+		.attr("fill", function(d,i){
+			return highlightDecider(i);
 		})
+}
+
+function UpdateMid(inputColor){
+	d3.select("middle")
+		.attr("fill", inputColor)
 }
 
 function highlightDecider(number){
