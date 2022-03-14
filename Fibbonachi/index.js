@@ -85,20 +85,20 @@ circles.transition()
 var mid = svg.append("circle")
 		.attr("cx", canvasSize/2)
 		.attr("cy",canvasSize/2)
-		.attr("fill", "black")
+
 		.attr("r",120)
 		.attr("id", "middle")
 
 
-
+var thisColor;
 circles.on("mouseover", function(d,i){
 	d3.select(this)
 		.transition()
 		.duration(300)
 		.attr("r",function(d, i){
-			console.log(d.color)
-			var thisColor = d.color
-			//UpdateMid(thisColor)
+//			console.log(d.color)
+			thisColor = d.color
+			updateMid()
 			return d.distance * 4 + 10;
 		})
 		
@@ -147,9 +147,11 @@ function updateVis(){
 		})
 }
 
-function UpdateMid(inputColor){
-	d3.select("middle")
-		.attr("fill", inputColor)
+function updateMid(){
+	console.log(thisColor)
+	d3.select("#middle")
+	.transition()
+		.attr("fill", thisColor)
 }
 
 function highlightDecider(number){
