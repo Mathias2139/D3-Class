@@ -30,7 +30,7 @@ for (var i = 0 ; i < numPoints; i++) {
 	arrData.push({xValue: x, yValue: y})
 
 
-	}
+}
 
 var circles = svg.selectAll("circle")
 	.data(birthData)
